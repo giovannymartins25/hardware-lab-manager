@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PC Builder Simulator Avançado</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+</head>
+
+<body>
+
+    <div class="container">
+        <header>
+            <h1>🛠️ Hardware Lab Manager</h1>
+            <p style="color: var(--text-secondary)">Engenharia, Testes de Sobrecarga e Renderização Realista</p>
+        </header>
+
+        <div class="dashboard">
+
+            <div class="card">
+                <h2>Componentes</h2>
+                <div class="components-grid">
+                    <div><label>Placa-Mãe (Mobo): <select id="mobo-select"></select></label></div>
+                    <div><label>Processador (CPU): <select id="cpu-select"></select></label></div>
+
+                    <div>
+                        <label>Placa de Vídeo (GPU): <select id="gpu-select"></select></label>
+                        <div id="gpu-tech"></div>
+                    </div>
+
+                    <div><label>Memória RAM: <select id="ram-select"></select></label></div>
+                    <div><label>Armazenamento: <select id="storage-select"></select></label></div>
+                    <div><label>Fonte (PSU): <select id="psu-select"></select></label></div>
+
+                    <div><label>Cooler / Refrigeração: <select id="cooler-select"></select></label></div>
+                    <div><label>Gabinete: <select id="case-select"></select></label></div>
+                </div>
+
+                <h2 style="margin-top: 2rem;">Cenário (Software)</h2>
+                <div class="components-grid">
+                    <label>Jogo/Software: <select id="game-select"></select></label>
+                    <label>Qualidade: <select id="quality-select"></select></label>
+                    <label>Resolução: <select id="res-select"></select></label>
+                </div>
+            </div>
+
+            <div class="card result-card">
+                <h2>Resultados de Performance</h2>
+
+                <div id="diagnostics-panel"
+                    style="background: rgba(237, 28, 36, 0.2); padding: 10px; border-left: 4px solid var(--danger); margin-bottom: 15px; display: none;">
+                    <strong>⚠️ Falha Crítica no Post (Pré-Boot):</strong>
+                    <p id="diag-msg" style="margin-top: 5px; color: #ff8a80; font-weight: 500;">Tudo OK.</p>
+                </div>
+
+                <p id="power-warning" style="color: var(--danger); text-align: center; font-weight: bold;"></p>
+
+                <div class="result-panel">
+                    <div class="fps-display"><span id="fps-value">--</span> <span
+                            style="font-size:1.5rem; color:#fff">FPS</span></div>
+                    <button id="test-btn" class="btn-primary" style="margin-bottom: 8px;">📊 Obter FPS
+                        (Estático)</button>
+                    <button id="sim-btn" class="btn-primary" style="background: #00e5ba; color: #000;">🔥 Iniciar Stress
+                        Test (Benchmark)</button>
+
+                    <div id="sim-panel"
+                        style="display:none; text-align: left; margin-top: 20px; background: rgba(255,255,255,0.05); padding: 15px; border-radius: 8px;">
+                        <p>⏱️ Tempo: <b id="sim-time" style="color:#00e5ba;"></b></p>
+                        <p>⚡ Consumo (Energia): <b id="avg-pwr">--</b> W</p>
+                        <p>🌡️ CPU Atual: <b id="sim-cpu-temp"></b>°C</p>
+                        <p>🌡️ GPU Atual: <b id="sim-gpu-temp"></b>°C</p>
+                        <p id="status-line" style="transition: color 0.4s;">🛠️ Status: <b id="sim-status"></b></p>
+
+                        <hr style="border: 1px solid rgba(255,255,255,0.1); margin: 10px 0;">
+                        <!-- Médias Globais -->
+                        <p>📊 FPS Médio: <b id="avg-fps" style="color:#00e5ba;">--</b></p>
+                        <p>🌡️ CPU Média: <b id="avg-cpu" style="color:#ff9800;">--</b>°C</p>
+                        <p>🌡️ GPU Média: <b id="avg-gpu" style="color:#76b900;">--</b>°C</p>
+
+                        <hr style="border: 1px solid rgba(255,255,255,0.1); margin: 10px 0;">
+                        <!-- Painel de Bottleneck -->
+                        <div id="bottleneck-panel"
+                            style="padding: 8px; border-radius: 6px; background: rgba(0,0,0,0.3); transition: background 0.4s;">
+                            <p style="font-weight:bold; margin-bottom:4px;">🔬 Análise de Gargalo:</p>
+                            <p id="bottleneck-cpu-pct">CPU: <b>--%</b></p>
+                            <p id="bottleneck-gpu-pct">GPU: <b>--%</b></p>
+                            <p id="bottleneck-verdict" style="margin-top:6px; font-weight:bold;">⏳ Aguardando
+                                Simulação...</p>
+                        </div>
+
+                        <hr style="border: 1px solid rgba(255,255,255,0.1); margin: 10px 0;">
+                        <!-- Social Share -->
+                        <div id="share-panel" style="display:flex; flex-direction:column; gap:6px;">
+                            <button id="copy-share-btn" class="btn-primary"
+                                style="background: #1d72b8; padding: 0.5rem;">📋 Copiar Resultado para Área de
+                                Transferência</button>
+                            <button id="screenshot-btn" class="btn-primary"
+                                style="background: #7b2d8b; padding: 0.5rem;">📷 Baixar Screenshot do Benchmark</button>
+                        </div>
+                    </div>
+
+                    <div id="sim-controls" style="display:none; gap: 5px; margin-top: 10px;">
+                        <button id="pause-btn" class="btn-primary"
+                            style="background: gray; padding: 0.5rem; flex: 1;">⏸️ Pausar</button>
+                        <button id="resume-btn" class="btn-primary"
+                            style="background: var(--success); padding: 0.5rem; flex: 1; display: none;">▶️
+                            Continuar</button>
+                        <button id="reset-btn" class="btn-primary"
+                            style="background: var(--danger); padding: 0.5rem; flex: 1;">🔄 Resetar</button>
+                    </div>
+
+                    <div id="speed-control" style="display:none; margin-top: 10px; text-align: left;">
+                        <label for="speed-select"
+                            style="font-weight: bold; color: #bbb; display: block; margin-bottom: 5px;">Velocidade da
+                            Simulação:</label>
+                        <select id="speed-select">
+                            <option value="0.5">0.5x (Lento/Fria)</option>
+                            <option value="1" selected>1x (Normal)</option>
+                            <option value="2">2x (Rápido)</option>
+                            <option value="3">3x (Sobrecarga Instantânea)</option>
+                        </select>
+                    </div>
+
+                </div>
+
+                <canvas id="fpsChart"></canvas>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
