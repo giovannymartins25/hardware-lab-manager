@@ -78,3 +78,23 @@ select {
 .badge { display: inline-block; padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.85rem; font-weight: bold; background: #333; margin-top: 10px; }
 
 canvas { margin-top: 20px; background: #1a1a1a; border-radius: 8px; padding: 10px;}
+
+footer {
+    background-color: #1a1a1a; /* Cor de fundo escura */
+    color: #888;
+    text-align: center;
+    padding: 30px 10px;
+    margin-top: 50px;
+    border-top: 1px solid #333;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+footer strong {
+    color: #00ffcc; /* Cor de destaque (ciano/verde) */
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+footer strong:hover {
+    text-shadow: 0 0 10px #00ffcc;
+}
