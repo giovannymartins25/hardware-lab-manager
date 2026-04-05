@@ -80,21 +80,29 @@ select {
 canvas { margin-top: 20px; background: #1a1a1a; border-radius: 8px; padding: 10px;}
 
 footer {
-    background-color: #1a1a1a; /* Cor de fundo escura */
+    background-color: #111; /* Cor escura combinando com seu site */
     color: #888;
     text-align: center;
-    padding: 30px 10px;
+    padding: 30px 20px;
     margin-top: 50px;
     border-top: 1px solid #333;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-footer strong {
-    color: #00ffcc; /* Cor de destaque (ciano/verde) */
-    cursor: pointer;
+.github-link {
+    text-decoration: none; /* Tira o sublinhado */
+    color: #00ffcc; /* Cor verde/ciano que você tá usando */
     transition: 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px; /* Espaço entre o nome e o ícone */
 }
 
-footer strong:hover {
-    text-shadow: 0 0 10px #00ffcc;
+.github-link:hover {
+    color: #fff; /* Muda pra branco quando passa o mouse */
+    text-shadow: 0 0 10px #00ffcc; /* Brilho neon */
+    transform: translateY(-2px); /* Dá uma subidinha leve */
+}
+
+.github-link i {
+    font-size: 1.2rem;
 }
