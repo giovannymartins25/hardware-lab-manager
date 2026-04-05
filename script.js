@@ -1200,7 +1200,7 @@ function copyShareResult() {
 🌡️ Temp Máxima Média: ${maxTemp.toFixed(1)}°C
 🔬 Gargalo: ${bottleneckText}
 📊 Status: ${statusText}
-Faça o seu teste aqui: https://hardware-lab-manager.vercel.app`;
+Faça o seu teste aqui: https://hardware-lab-manager.vercel.app/`;
 
     navigator.clipboard.writeText(shareText)
         .then(() => {
